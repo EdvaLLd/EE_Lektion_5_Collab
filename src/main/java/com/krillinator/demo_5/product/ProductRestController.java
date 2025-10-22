@@ -47,11 +47,12 @@ public class ProductRestController {
                 );
     }
 
-    @DeleteMapping("/delete")
-    public Mono<Void> deleteProductById(@PathVariable @Positive Long id) {
+    @DeleteMapping("/delete/{id}")
+    public Mono<ResponseEntity<Object>> deleteProductById(@PathVariable @Positive Long id) {
 
         return productService.deleteProductById(id)
-                .map(product -> ResponseEntity.status(204)).then();
+                .then(Mono.just(ResponseEntity.noContent().build()))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
 }

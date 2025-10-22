@@ -21,7 +21,8 @@ public class ProductRepositoryTest {
 
     @BeforeEach
     public void clearDatabase(){
-        productRepository.deleteAll().block();
+        StepVerifier.create(productRepository.deleteAll())
+                .verifyComplete();
     }
     @Test
     @Timeout(value = 5, unit = TimeUnit.SECONDS)
